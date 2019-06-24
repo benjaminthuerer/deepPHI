@@ -23,7 +23,7 @@ conn_matrices = conn_matrices[:phismax.__len__()]
 
 """Keras Regressor"""
 np.random.seed(7)
-estimator = KerasRegressor(build_fn=createModel.model_1d, epochs=2, batch_size=5, verbose=0)
+estimator = KerasRegressor(build_fn=createModel.model_1d, epochs=50, batch_size=20, verbose=0)
 
 # 10-fold cross-validation
 kfold = KFold(n_splits=10, random_state=7)
@@ -36,6 +36,13 @@ print("Results: %.2f (%.2f) MSE" % (resultsMSE.mean(), resultsMSE.std()))
 """fit again for plotting"""
 estimator.fit(conn_matrices, phismax)
 predictions = estimator.predict(conn_matrices)
+
+font = {'family': 'serif',
+        'color':  'red',
+        'weight': 'normal',
+        'size': 16,
+        }
+
 plt.scatter(phismax, predictions)
 plt.xlabel("PHI max values")
 plt.ylabel("predicted PHI max")
@@ -43,8 +50,9 @@ plt.axis("equal")
 plt.axis("square")
 plt.xlim(-2, 12)
 plt.ylim(-2, 12)
-_ = plt.plot([-100, 100], [-100, 100])
-plt.title("MSE: %.2f, R2: %.2f" % (resultsMSE.mean(), resultsR.mean()))
+_ = plt.plot([-100, 100], [-100, 100], "r--")
+plt.title("MSE: %.2f, R2: %.2f" % (resultsMSE.mean(), resultsR.mean()), fontdict=font)
+plt.show()
 
 
 """old regressor without cross-validation"""
