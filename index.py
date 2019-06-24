@@ -27,11 +27,11 @@ estimator = KerasRegressor(build_fn=createModel.model_1d, epochs=2, batch_size=5
 
 # 10-fold cross-validation
 kfold = KFold(n_splits=10, random_state=7)
-results = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="r2")
-print("Results: %.2f (%.2f) R2" % (results.mean(), results.std()))
+resultsR = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="r2")
+print("Results: %.2f (%.2f) R2" % (resultsR.mean(), resultsR.std()))
 
-results = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="neg_mean_squared_error")
-print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+resultsMSE = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="neg_mean_squared_error")
+print("Results: %.2f (%.2f) MSE" % (resultsMSE.mean(), resultsMSE.std()))
 
 """fit again for plotting"""
 estimator.fit(conn_matrices, phismax)
@@ -44,6 +44,7 @@ plt.axis("square")
 plt.xlim(-2, 12)
 plt.ylim(-2, 12)
 _ = plt.plot([-100, 100], [-100, 100])
+plt.title("MSE: %.2f, R2: %.2f" % (resultsMSE.mean(), resultsR.mean()))
 
 
 """old regressor without cross-validation"""
