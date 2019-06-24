@@ -16,5 +16,5 @@ def model_1d():
 
 if __name__ == "__main__":
     dim = 160
-    model = model_1d(dim)
+    model = model_1d()
     model.summary()
