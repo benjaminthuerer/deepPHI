@@ -1,5 +1,10 @@
 import scipy.io
 import numpy as np
+import createModel
+import matplotlib.pyplot as plt
+from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
 
 data_path = 'Z:/13_deepPhi/'
 files_train = ['conn_matrices.mat', 'network_matrices.mat', 'phismax.mat', 'phismeans.mat']
@@ -12,11 +17,36 @@ for file in files_train:
 phismax = phismax.tolist()[0]
 phismeans = phismeans.tolist()[0]
 
-import tensorflow as tf
-import createModel
-
 dim = conn_matrices.shape
 conn_matrices = np.reshape(conn_matrices, (dim[0], dim[1] * dim[2]))
-model = createModel.model_1d(conn_matrices.shape[1])
+conn_matrices = conn_matrices[:phismax.__len__()]
+
+"""Keras Regressor"""
+np.random.seed(7)
+estimator = KerasRegressor(build_fn=createModel.model_1d, epochs=2, batch_size=5, verbose=0)
+
+# 10-fold cross-validation
+kfold = KFold(n_splits=10, random_state=7)
+results = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="r2")
+print("Results: %.2f (%.2f) R2" % (results.mean(), results.std()))
+
+results = cross_val_score(estimator, conn_matrices, phismax, cv=kfold, scoring="neg_mean_squared_error")
+print("Results: %.2f (%.2f) MSE" % (results.mean(), results.std()))
+
+"""fit again for plotting"""
+estimator.fit(conn_matrices, phismax)
+predictions = estimator.predict(conn_matrices)
+plt.scatter(phismax, predictions)
+plt.xlabel("PHI max values")
+plt.ylabel("predicted PHI max")
+plt.axis("equal")
+plt.axis("square")
+plt.xlim(-2, 12)
+plt.ylim(-2, 12)
+_ = plt.plot([-100, 100], [-100, 100])
 
 
+"""old regressor without cross-validation"""
+# model = createModel.model_1d()
+# es = keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
+# model.fit(conn_matrices, phismax, batch_size=50, epochs=100, validation_split=0.2, callbacks=[es])
