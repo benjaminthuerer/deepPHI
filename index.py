@@ -6,11 +6,7 @@ from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 
-<<<<<<< HEAD
-print("hello world")
 
-print("this is just seen in branch master)
-=======
 data_path = 'Z:/13_deepPhi/'
 files_train = ['conn_matrices.mat', 'network_matrices.mat', 'phismax.mat', 'phismeans.mat']
 
@@ -64,4 +60,3 @@ plt.show()
 # model = createModel.model_1d()
 # es = keras.callbacks.EarlyStopping(monitor='val_loss', patience=2)
 # model.fit(conn_matrices, phismax, batch_size=50, epochs=100, validation_split=0.2, callbacks=[es])
->>>>>>> start_model
