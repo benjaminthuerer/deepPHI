@@ -3,7 +3,7 @@ import numpy as np
 import trainModel
 
 # Define model parameters:
-epochs = 100
+epochs = 200
 batch = 70
 
 # load data and target

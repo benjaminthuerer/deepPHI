@@ -61,7 +61,7 @@ def train_model_1d(epochs, batch, train_data, val_data, train_target, val_target
     n_dim = train_data.shape[1]
 
     np.random.seed(7)
-    estimator = KerasRegressor(build_fn=createModel.model_1d, n_dim=n_dim, epochs=epochs, batch_size=batch, verbose=2)
+    estimator = KerasRegressor(build_fn=createModel.model_1d, dim=n_dim, epochs=epochs, batch_size=batch, verbose=2)
 
     cross_validation(estimator, train_data, train_target, val_data, val_target)
 
@@ -72,7 +72,7 @@ def train_model_cnn(epochs, batch, train_data, val_data, train_target, val_targe
     n_dim = train_data.shape
 
     np.random.seed(7)
-    estimator = KerasRegressor(build_fn=createModel.model_cnn, n_dim=n_dim, epochs=epochs, batch_size=batch,
+    estimator = KerasRegressor(build_fn=createModel.model_cnn, dim=n_dim, epochs=epochs, batch_size=batch,
                                verbose=2)
 
     cross_validation(estimator, train_data, train_target, val_data, val_target)
