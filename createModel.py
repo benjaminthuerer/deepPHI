@@ -17,6 +17,12 @@ def model_1d(dim):
 
     return model
 
+    # for multi GPU parallelization
+    # model_parallel = keras.utils.multi_gpu_model(model, gpus=2)
+    # model_parallel.compile(optimizer='adam', loss='mean_squared_error')
+    #
+    # return model_parallel
+
 
 def model_cnn(dim):
     """create regression model with 2D CNN"""
@@ -47,6 +53,12 @@ def model_cnn(dim):
     model.compile(optimizer='adam', loss='mean_squared_error')
 
     return model
+
+    # for multi GPU parallelization
+    # model_parallel = keras.utils.multi_gpu_model(model, gpus=2)
+    # model_parallel.compile(optimizer='adam', loss='mean_squared_error')
+    #
+    # return model_parallel
 
 
 if __name__ == "__main__":
