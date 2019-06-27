@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import seaborn as sns
 
 
-def cross_validation(estimator, train_data, train_target, val_data, val_target):
+def cross_validation(estimator, train_data, train_target, val_data, val_target, epochs, batch, model_name):
     """10-fold cross-validation of KerasRegressor with mean-squared-error and R-squared for scoring"""
 
     kfold = KFold(n_splits=10, random_state=7)
@@ -30,6 +30,7 @@ def cross_validation(estimator, train_data, train_target, val_data, val_target):
     ax.set_title("MSE: %.2f, R2: %.2f" % (mse, r2))
     ax.set_xlabel("computed PHI max")
     ax.set_ylabel("predicted PHI max")
+    plt.savefig(f"Z:/13_deepPhi/results/results_{model_name}_{batch}b_{epochs}e.png")
     plt.show()
 
     """old scatter plot"""
@@ -63,7 +64,7 @@ def train_model_1d(epochs, batch, train_data, val_data, train_target, val_target
     np.random.seed(7)
     estimator = KerasRegressor(build_fn=createModel.model_1d, dim=n_dim, epochs=epochs, batch_size=batch, verbose=2)
 
-    cross_validation(estimator, train_data, train_target, val_data, val_target)
+    cross_validation(estimator, train_data, train_target, val_data, val_target, epochs, batch, "1dDense")
 
 
 def train_model_cnn(epochs, batch, train_data, val_data, train_target, val_target):
@@ -75,4 +76,4 @@ def train_model_cnn(epochs, batch, train_data, val_data, train_target, val_targe
     estimator = KerasRegressor(build_fn=createModel.model_cnn, dim=n_dim, epochs=epochs, batch_size=batch,
                                verbose=2)
 
-    cross_validation(estimator, train_data, train_target, val_data, val_target)
+    cross_validation(estimator, train_data, train_target, val_data, val_target, epochs, batch, "2dCNN")
