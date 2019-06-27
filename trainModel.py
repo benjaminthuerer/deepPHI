@@ -6,6 +6,7 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import mean_squared_error, r2_score
 import seaborn as sns
+import tensorflow.keras as keras
 
 
 def cross_validation(estimator, train_data, train_target, val_data, val_target, epochs, batch, model_name):
@@ -77,3 +78,26 @@ def train_model_cnn(epochs, batch, train_data, val_data, train_target, val_targe
                                verbose=2)
 
     cross_validation(estimator, train_data, train_target, val_data, val_target, epochs, batch, "2dCNN")
+
+
+def train_model_categorical(epochs, batch, train_data, val_data, train_target, val_target):
+    """train model to predict PHI categoricals"""
+
+    n_dim = train_data.shape[1]
+
+    train_target = keras.utils.to_categorical(train_target, num_classes=4)
+
+    cat_model = createModel.model_categorical(n_dim)
+    cat_model.fit(train_data, train_target, batch_size=batch, epochs=epochs, validation_split=0.1)
+
+    predictions = cat_model.predict_classes(val_data)
+
+    D = {0: 0, 1: 0, 2: 0, 3: 0}
+    D_total = {0: 0, 1: 0, 2: 0, 3: 0}
+    for i, v in enumerate(predictions):
+        D_total[v] += 1
+        if v == int(val_target[i]):
+            D[v] += 1
+
+    for i in range(4):
+        print(f"{i}: {D[i] / D_total[i] * 100}")

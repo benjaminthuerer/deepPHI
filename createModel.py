@@ -61,6 +61,22 @@ def model_cnn(dim):
     # return model_parallel
 
 
+def model_categorical(dim):
+    """create categorical model to predict Phi values for 0, 0<PHI<1, 1, 1<PHI"""
+
+    model = keras.Sequential()
+    model.add(keras.layers.Dense(480, input_dim=dim, activation='relu'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dense(240, activation='relu'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dense(120, activation='relu'))
+    model.add(keras.layers.BatchNormalization())
+
+    model.add(keras.layers.Dense(4, activation='softmax'))
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+    return model
+
 if __name__ == "__main__":
     n_dim = 160
     model = model_1d(n_dim)
