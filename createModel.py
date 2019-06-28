@@ -67,10 +67,11 @@ def model_categorical(dim):
     model = keras.Sequential()
     model.add(keras.layers.Dense(480, input_dim=dim, activation='relu'))
     model.add(keras.layers.BatchNormalization())
-    model.add(keras.layers.Dense(240, activation='relu'))
+    model.add(keras.layers.Dense(180, activation='relu'))
     model.add(keras.layers.BatchNormalization())
-    model.add(keras.layers.Dense(120, activation='relu'))
+    model.add(keras.layers.Dense(60, activation='relu'))
     model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.1))
 
     model.add(keras.layers.Dense(4, activation='softmax'))
     model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
